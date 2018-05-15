@@ -5,9 +5,9 @@
 //  Created by iainsmith on 29/03/2018.
 //
 
+import Files
 import Foundation
 import Gherkin
-import Files
 
 public typealias Generator = XCTestGenerator
 
@@ -18,7 +18,7 @@ public enum GherkinSync {
                                         using generator: Generator.Type) throws -> SyncResult {
         let folder = try Folder(path: featurePath)
         let output: Folder = try Folder(path: outputPath)
-        let featureFiles = folder.files.filter { $0.extension  == "feature" }.map { $0 }
+        let featureFiles = folder.files.filter { $0.extension == "feature" }.map { $0 }
         guard featureFiles.isEmpty == false else { throw GherkinSyncError.noFeatureFiles }
 
         let readResult = readFeatures(from: featureFiles)
@@ -35,7 +35,7 @@ public enum GherkinSync {
     static func readFeatures(from files: [File]) -> (features: [Feature], failed: [SyncFailure]) {
         var failedFiles = [SyncFailure]()
         let features: [Feature] = files.flatMap { file in
-            do  {
+            do {
                 return try Feature(file.readAsString())
             } catch {
                 let failure = SyncFailure.parserFailure(file)
@@ -49,7 +49,7 @@ public enum GherkinSync {
     static func writeTestsStubs(for features: [Feature], to outputFolder: Folder, using generator: Generator.Type) throws -> SyncResult {
         let testFileName = generator.stepFileName
 
-        let steps = features.map { generator.testStubs(for: $0)}.unique().sorted()
+        let steps = features.map { generator.testStubs(for: $0) }.unique().sorted()
         let text = steps.joined(separator: "\n")
         let file = try outputFolder.createFileIfNeeded(withName: testFileName)
         try file.append(string: text)

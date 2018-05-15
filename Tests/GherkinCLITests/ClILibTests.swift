@@ -5,10 +5,10 @@
 //  Created by iainsmith on 30/03/2018.
 //
 
-import XCTest
-@testable import GherkinCLILib
-import Gherkin
 import Files
+import Gherkin
+@testable import GherkinCLILib
+import XCTest
 
 class BootstrapTests: XCTestCase {
     var featureText: String!
@@ -16,19 +16,19 @@ class BootstrapTests: XCTestCase {
     override func setUp() {
         super.setUp()
         featureText =
-        """
-        Feature: User Registration
-        Scenario: Successful Registration
-        Given I am on the homepage
-        And I don't have an account
+            """
+            Feature: User Registration
+            Scenario: Successful Registration
+            Given I am on the homepage
+            And I don't have an account
 
-        Scenario: Existing Registration
-        Given I am on the homepage
-        And I have an account
-        """
+            Scenario: Existing Registration
+            Given I am on the homepage
+            And I have an account
+            """
     }
 
-    func testSyncingAFolder () throws {
+    func testSyncingAFolder() throws {
         let filesystem = FileSystem()
         let temp = filesystem.temporaryFolder
         let name = "gherkinFeatureTests"
@@ -36,7 +36,6 @@ class BootstrapTests: XCTestCase {
         let folder = try temp.createSubfolderIfNeeded(withName: name)
         let features = try folder.createSubfolderIfNeeded(withName: "Features")
         let tests = try folder.createSubfolderIfNeeded(withName: "Tests")
-
 
         try [features, tests].forEach { try $0.empty() }
 
@@ -57,5 +56,5 @@ class BootstrapTests: XCTestCase {
 
     static var allTests = [
         ("testSyncingAFolder", testSyncingAFolder),
-        ]
+    ]
 }
